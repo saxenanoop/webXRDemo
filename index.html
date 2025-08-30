@@ -1,65 +1,49 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>Polygonal Forest AR</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- A-Frame -->
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-    <!-- AR.js (location-based WebAR) -->
-    <script src="https://rawcdn.githack.com/AR-js-org/AR.js/3.4.2/aframe/build/aframe-ar.min.js"></script>
-
-    <link rel="stylesheet" href="style.css" />
+    <title>Interactive A-Frame Orb</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   </head>
+  <body>
+    <a-scene background="color: #2E2E2E">
 
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene
-      vr-mode-ui="enabled: false"
-      embedded
-      arjs="sourceType: webcam; debugUIEnabled: false;"
-    >
+      <a-camera>
+        <a-cursor
+          color="#FFD700"
+          scale="1 1 1"
+        ></a-cursor>
+      </a-camera>
 
-      <a-camera gps-camera rotation-reader></a-camera>
+      <a-sphere
+        id="magic-orb"
+        position="0 1.6 -5"
+        radius="1"
+        color="#8E44AD"
+      >
+        <a-animation
+          attribute="scale"
+          to="1.2 1.2 1.2"
+          dur="300"
+          begin="mouseenter"
+        ></a-animation>
 
-      <!-- Forest -->
-      <a-entity id="forest"></a-entity>
+        <a-animation
+          attribute="scale"
+          to="1 1 1"
+          dur="300"
+          begin="mouseleave"
+        ></a-animation>
+
+        <a-animation
+          attribute="material.color"
+          to="#F1C40F"
+          dur="200"
+          begin="click"
+        ></a-animation>
+      </a-sphere>
+
+      <a-plane position="0 0 -5" rotation="-90 0 0" width="10" height="10" color="#444"></a-plane>
 
     </a-scene>
-
-    <script>
-      const forest = document.getElementById("forest");
-      const treeCount = 13;
-      const radius = 5; // meters
-
-      for (let i = 0; i < treeCount; i++) {
-        const angle = (i / treeCount) * Math.PI * 2;
-        const x = Math.cos(angle) * radius;
-        const z = Math.sin(angle) * radius;
-
-        const tree = document.createElement("a-entity");
-
-        // Trunk
-        const trunk = document.createElement("a-cylinder");
-        trunk.setAttribute("color", "#8B4513");
-        trunk.setAttribute("radius", "0.1");
-        trunk.setAttribute("height", "1");
-        trunk.setAttribute("position", "0 0.5 0");
-        tree.appendChild(trunk);
-
-        // Leaves
-        const leaves = document.createElement("a-cone");
-        leaves.setAttribute("color", "#228B22");
-        leaves.setAttribute("radius-bottom", "0.5");
-        leaves.setAttribute("radius-top", "0");
-        leaves.setAttribute("height", "1");
-        leaves.setAttribute("position", "0 1.5 0");
-        tree.appendChild(leaves);
-
-        tree.setAttribute("position", `${x} 0 ${z}`);
-        forest.appendChild(tree);
-      }
-    </script>
   </body>
 </html>
